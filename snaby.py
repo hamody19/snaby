@@ -13,8 +13,10 @@ def check_username(username, save_in_file: bool):
         print(f"{Fore.GREEN}[+] {Fore.RESET} Valid username: {Fore.CYAN}{username}{Fore.RESET}")
         if save_in_file:
             save_usernames_in_file(username)
+        return username
     elif response.status_code == 200 or response.status_code == 204:
         print(f"{Fore.RED}[-] {Fore.RESET}Invalid username: {username}")
+        return None
     elif response.status_code == 429:
         for i in range(30, -1, -1):
             print("\r" + f"{Fore.RED}[!] {Fore.RESET}" +
@@ -23,6 +25,8 @@ def check_username(username, save_in_file: bool):
         print()
     else:
         print(f"{Fore.RED}[?] Unknown Error occurred while the program was running")
+        return None
+    return None
 
 
 def seek_for_usernames(usernames: list, save_in_file: bool = False):
@@ -44,4 +48,5 @@ def save_usernames_in_file(username):
 def display_result(result: list):
     print(f"{Fore.GREEN}available user names{Fore.RESET}")
     for available_username in result:
-        print(f"{Fore.CYAN}" + available_username + f"{Fore.RESET}")
+        if available_username is not None:
+            print(f"{Fore.CYAN}{available_username}{Fore.RESET}")

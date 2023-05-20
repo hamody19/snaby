@@ -1,4 +1,3 @@
-from userGenerator import UserGenerator
 from env import URL
 import requests
 from multiprocessing import Pool
@@ -30,6 +29,7 @@ def seek_for_usernames(usernames: list, save_in_file: bool = False):
     with Pool(processes=4) as pool:
         # remember to add print result function
         result = pool.starmap(check_username, [(username, save_in_file) for username in usernames])
+        display_result(result)
 
 
 def save_usernames_in_file(username):
@@ -39,3 +39,9 @@ def save_usernames_in_file(username):
     except FileNotFoundError:
         with open("available.txt", 'w') as txtFile:
             txtFile.writelines("Valid username: " + username + '\n')
+
+
+def display_result(result: list):
+    print(f"{Fore.GREEN}available user names{Fore.RESET}")
+    for available_username in result:
+        print(f"{Fore.CYAN}" + available_username + f"{Fore.RESET}")

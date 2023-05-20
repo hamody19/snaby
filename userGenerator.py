@@ -17,6 +17,11 @@ class UserGenerator:
         else:
             self.__user_name_length = user_name_length
 
+    def get_list_length(self):
+        return self.__list_length
+
+    def get_name_length(self):
+        return self.__user_name_length
     def user_name_generator(self):
         # the length of user name list how many users contain
         characters = string.ascii_lowercase + "_." + string.digits

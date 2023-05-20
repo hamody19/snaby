@@ -20,7 +20,7 @@ def check_username(username):
             sleep(1)
         print()
     else:
-        print(colors["red"] + "[?] Unknown Error occur while the program run")
+        print(colors["red"] + "[?] Unknown Error occur while the program running")
 
 
 def check_for_valid_names():

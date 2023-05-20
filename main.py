@@ -1,17 +1,18 @@
 from snaby import seek_for_usernames
 from userGenerator import UserGenerator
-from env import colors, accepting
-
+from env import accepting
+from colorama import Fore, init
+init()
 if __name__ == "__main__":
-    number_of_names_to_generate = int(input(colors["green"] + "[+]" + colors["white"] +
+    number_of_names_to_generate = int(input(f"{Fore.GREEN}[+] {Fore.RESET}" +
                                             "How many user names you want to generate? : "
                                             ))
-    username_length = int(input(colors["green"] + "[+]" + colors["white"] + "Enter length of usernames \n" +
-                                colors["red"] + "[-] note the usernames length shouldn't be less than 2 or " +
-                                "greater than 24 TIKTOK does not allow it : " + colors["white"]))
+    username_length = int(input(f"{Fore.GREEN}[+] {Fore.RESET} Enter length of usernames \n" +
+                                f"{Fore.RED}[-] note the usernames length shouldn't be less than 2 or " +
+                                f"greater than 24 TIKTOK does not allow it :  {Fore.RESET}"))
     generate_users = UserGenerator(number_of_names_to_generate, username_length)
 
-    save_in_file = input(colors["green"] + "[+]" + colors["white"] +
+    save_in_file = input(f"{Fore.GREEN}[+] {Fore.RESET}" +
                          "do you want to save the user names in a file? [y][yes]/[n][no] : "
                          )
 

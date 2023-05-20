@@ -1,40 +1,41 @@
-import requests
-from env import *
-from multiprocessing import Pool
 from userGenerator import UserGenerator
+from env import URL
+import requests
+from multiprocessing import Pool
 from time import sleep
+from colorama import init, Fore
+
+init()
 
 
-def check_username(username):
+def check_username(username, save_in_file: bool):
     response = requests.get(URL + username)
     if response.status_code == 404:
-        print(colors["green"] + f"[+]" + colors["white"] + " Valid username: " + colors["blue"] + username + colors["white"])
+        print(f"{Fore.GREEN}[+] {Fore.RESET} Valid username: {Fore.CYAN}{username}{Fore.RESET}")
+        if save_in_file:
+            save_usernames_in_file(username)
     elif response.status_code == 200 or response.status_code == 204:
-        print(colors["red"] + f"[-]" + colors["white"] + "Invalid username: " + username)
+        print(f"{Fore.RED}[-] {Fore.RESET}Invalid username: {username}")
     elif response.status_code == 429:
         for i in range(30, -1, -1):
-            print(
-                "\r" + colors["red"] + f"[!] " + colors["white"] +
-                " you're being ratelimited! Sleeping for {red}{i}{white}s ....", end=''
-            )
+            print("\r" + f"{Fore.RED}[!] {Fore.RESET}" +
+                  f"you're being ratelimited! Sleeping for {Fore.RED}{i}{Fore.RESET}s ....", end='')
             sleep(1)
         print()
     else:
-        print(colors["red"] + "[?] Unknown Error occur while the program running")
+        print(f"{Fore.RED}[?] Unknown Error occurred while the program was running")
 
 
-def check_for_valid_names():
-    create_users = UserGenerator(10000, 4)
-    create_users.user_name_generator()
+def seek_for_usernames(usernames: list, save_in_file: bool = False):
     with Pool(processes=4) as pool:
-        results = pool.map(check_username, create_users.user_names)
-
-    with open("validUserNames.txt", 'a') as f:
-        for result in results:
-            if result:
-                f.writelines(result + '\n')
+        # remember to add print result function
+        result = pool.starmap(check_username, [(username, save_in_file) for username in usernames])
 
 
-if __name__ == "__main__":
-    check_for_valid_names()
-
+def save_usernames_in_file(username):
+    try:
+        with open("available.txt", 'a') as txtFile:
+            txtFile.writelines("Valid username: " + username + '\n')
+    except FileNotFoundError:
+        with open("available.txt", 'w') as txtFile:
+            txtFile.writelines("Valid username: " + username + '\n')

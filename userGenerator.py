@@ -22,10 +22,17 @@ class UserGenerator:
 
     def get_name_length(self):
         return self.__user_name_length
+
     def user_name_generator(self):
-        # the length of user name list how many users contain
-        characters = string.ascii_lowercase + "_." + string.digits
+        characters = string.ascii_lowercase
         while self.user_names.__len__() < self.__list_length:
-            self.user_names. \
-                add("".
-                    join(random.choice(characters) for _ in range(self.__user_name_length)))
+            user_name = ""
+            while len(user_name) < self.__user_name_length:
+                user_name += random.choice(characters)
+            if user_name[0] not in "._0123456789" and user_name[-1] not in "._0123456789":
+                self.user_names.add(user_name)
+            if user_name[0] in "._0123456789":
+                user_name = user_name[1:]
+            if user_name[-1] in "._0123456789":
+                user_name = user_name[:-1]
+
